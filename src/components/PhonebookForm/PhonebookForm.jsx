@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getContacts } from 'redux/selectors';
-import { addContact } from 'redux/contactsSlice';
+import { addContact } from 'redux/operationsContacts';
 import { hasInclude } from 'utils';
 import css from './PhonebookForm.module.css';
 
 export default function PhonebookForm() {
   const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
+  const [phone, setPhone] = useState('');
 
   const contacts = useSelector(getContacts);
   const dispatch = useDispatch();
@@ -20,7 +20,7 @@ export default function PhonebookForm() {
       case 'name':
         return setName(inputValue);
       case 'number':
-        return setNumber(inputValue);
+        return setPhone(inputValue);
       default:
         return;
     }
@@ -29,16 +29,16 @@ export default function PhonebookForm() {
   const handleSubmit = event => {
     event.preventDefault();
 
-    const isAlreadyHave = hasInclude(name, number, contacts);
+    const isAlreadyHave = hasInclude(name, phone, contacts);
 
     if (isAlreadyHave) {
       return alert(isAlreadyHave + ' is already in contacts.');
     }
 
-    dispatch(addContact(name, number));
+    dispatch(addContact(name, phone));
 
     setName('');
-    setNumber('');
+    setPhone('');
   };
 
   return (
@@ -65,7 +65,7 @@ export default function PhonebookForm() {
           pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
           title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
           required
-          value={number}
+          value={phone}
           onChange={handleChange}
         />
       </label>

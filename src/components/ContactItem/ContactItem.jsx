@@ -1,12 +1,15 @@
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
-import { removeContact } from 'redux/contactsSlice';
+import { removeContact } from 'redux/operationsContacts';
 import css from './ContactItem.module.css';
 
 export default function ContactItem({ id, name, number }) {
   const dispatch = useDispatch();
 
-  const handleRemove = () => dispatch(removeContact(id));
+  const handleRemove = event => {
+    event.currentTarget.textContent = 'Wait';
+    dispatch(removeContact(id));
+  };
 
   return (
     <li className={css.contactItem}>

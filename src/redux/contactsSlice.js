@@ -1,29 +1,60 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { nanoid } from 'nanoid';
-
-const initialContacts = { contactList: [] };
 
 const contactsSlice = createSlice({
   name: 'contacts',
-  initialState: initialContacts,
+  initialState: { items: [], isLoading: false, error: null },
   reducers: {
-    addContact: {
-      reducer(state, action) {
-        state.contactList.push(action.payload);
-      },
-      prepare(name, number) {
-        return { payload: { id: nanoid(), name, number } };
-      },
+    fetchContactsRequest(state) {
+      state.isLoading = true;
     },
-
-    removeContact(state, action) {
-      const index = state.contactList.findIndex(
-        contact => contact.id === action.payload
+    fetchContactsSuccess(state, action) {
+      state.isLoading = false;
+      state.error = null;
+      state.items = action.payload;
+    },
+    fetchContactsError(state, action) {
+      state.isLoading = false;
+      state.error = action.payload;
+    },
+    addContactRequest(state) {
+      state.isLoading = true;
+    },
+    addContactSuccess(state, action) {
+      state.isLoading = false;
+      state.error = null;
+      state.items.push(action.payload);
+    },
+    addContactError(state, action) {
+      state.isLoading = false;
+      state.error = action.payload;
+    },
+    removeContactRequest(state) {
+      state.isLoading = true;
+    },
+    removeContactSuccess(state, action) {
+      state.isLoading = false;
+      state.error = null;
+      const index = state.items.findIndex(
+        contacts => contacts.id === action.payload
       );
-      state.contactList.splice(index, 1);
+      state.items.splice(index, 1);
+    },
+    removeContactError(state, action) {
+      state.isLoading = false;
+      state.error = action.payload;
     },
   },
 });
 
-export const { addContact, removeContact } = contactsSlice.actions;
+export const {
+  fetchContactsRequest,
+  fetchContactsSuccess,
+  fetchContactsError,
+  addContactRequest,
+  addContactSuccess,
+  addContactError,
+  removeContactRequest,
+  removeContactSuccess,
+  removeContactError,
+} = contactsSlice.actions;
 export const contactsReducer = contactsSlice.reducer;
