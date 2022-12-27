@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getContacts } from 'redux/selectors';
+import { selectContacts } from 'redux/selectors';
 import { addContact } from 'redux/operationsContacts';
 import { hasInclude } from 'utils';
 import css from './PhonebookForm.module.css';
@@ -9,7 +9,7 @@ export default function PhonebookForm() {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
 
-  const contacts = useSelector(getContacts);
+  const contacts = useSelector(selectContacts);
   const dispatch = useDispatch();
 
   const handleChange = event => {
