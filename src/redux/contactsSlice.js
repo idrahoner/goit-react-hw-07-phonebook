@@ -1,60 +1,43 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { fetchContacts, addContact, removeContact } from './operationsContacts';
+
+const handlePending = state => {
+  state.isLoading = true;
+};
+const handleRejected = (state, action) => {
+  state.isLoading = false;
+  state.error = action.payload;
+};
 
 const contactsSlice = createSlice({
   name: 'contacts',
   initialState: { items: [], isLoading: false, error: null },
-  reducers: {
-    fetchContactsRequest(state) {
-      state.isLoading = true;
-    },
-    fetchContactsSuccess(state, action) {
+  extraReducers: {
+    [fetchContacts.pending]: handlePending,
+    [fetchContacts.fulfilled](state, action) {
       state.isLoading = false;
       state.error = null;
       state.items = action.payload;
     },
-    fetchContactsError(state, action) {
-      state.isLoading = false;
-      state.error = action.payload;
-    },
-    addContactRequest(state) {
-      state.isLoading = true;
-    },
-    addContactSuccess(state, action) {
+    [fetchContacts.rejected]: handleRejected,
+    [addContact.pending]: handlePending,
+    [addContact.fulfilled](state, action) {
       state.isLoading = false;
       state.error = null;
       state.items.push(action.payload);
     },
-    addContactError(state, action) {
-      state.isLoading = false;
-      state.error = action.payload;
-    },
-    removeContactRequest(state) {
-      state.isLoading = true;
-    },
-    removeContactSuccess(state, action) {
+    [addContact.rejected]: handleRejected,
+    [removeContact.pending]: handlePending,
+    [removeContact.fulfilled](state, action) {
       state.isLoading = false;
       state.error = null;
       const index = state.items.findIndex(
-        contacts => contacts.id === action.payload
+        contact => contact.id === action.payload
       );
       state.items.splice(index, 1);
     },
-    removeContactError(state, action) {
-      state.isLoading = false;
-      state.error = action.payload;
-    },
+    [removeContact.rejected]: handleRejected,
   },
 });
 
-export const {
-  fetchContactsRequest,
-  fetchContactsSuccess,
-  fetchContactsError,
-  addContactRequest,
-  addContactSuccess,
-  addContactError,
-  removeContactRequest,
-  removeContactSuccess,
-  removeContactError,
-} = contactsSlice.actions;
 export const contactsReducer = contactsSlice.reducer;

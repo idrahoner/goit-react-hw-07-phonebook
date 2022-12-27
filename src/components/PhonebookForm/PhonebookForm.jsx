@@ -35,7 +35,7 @@ export default function PhonebookForm() {
       return alert(isAlreadyHave + ' is already in contacts.');
     }
 
-    dispatch(addContact(name, phone));
+    dispatch(addContact({ name, phone }));
 
     setName('');
     setPhone('');
