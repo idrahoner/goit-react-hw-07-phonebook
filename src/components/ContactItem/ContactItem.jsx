@@ -1,13 +1,19 @@
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
+import { useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { removeContact } from 'redux/operationsContacts';
+import { selectLoadingStatus } from 'redux/selectors';
 import css from './ContactItem.module.css';
 
 export default function ContactItem({ id, name, number }) {
   const dispatch = useDispatch();
+  const loading = useSelector(selectLoadingStatus);
+
+  let clickedButtonId = useRef(null);
 
   const handleRemove = event => {
     event.currentTarget.textContent = 'Wait';
+    clickedButtonId = id;
     dispatch(removeContact(id));
   };
 
@@ -16,8 +22,13 @@ export default function ContactItem({ id, name, number }) {
       <p className={css.contactText}>
         {name}: {number}
       </p>
-      <button className={css.deleteButton} type="button" onClick={handleRemove}>
-        Delete
+      <button
+        className={css.deleteButton}
+        type="button"
+        onClick={handleRemove}
+        disabled={loading}
+      >
+        {loading && clickedButtonId === id ? 'Wait' : 'Delete'}
       </button>
     </li>
   );

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectContacts } from 'redux/selectors';
+import { selectContacts, selectLoadingStatus } from 'redux/selectors';
 import { addContact } from 'redux/operationsContacts';
 import { hasInclude } from 'utils';
 import css from './PhonebookForm.module.css';
@@ -10,6 +10,7 @@ export default function PhonebookForm() {
   const [phone, setPhone] = useState('');
 
   const contacts = useSelector(selectContacts);
+  const loading = useSelector(selectLoadingStatus);
   const dispatch = useDispatch();
 
   const handleChange = event => {
@@ -69,7 +70,7 @@ export default function PhonebookForm() {
           onChange={handleChange}
         />
       </label>
-      <button className={css.submitButton} type="submit">
+      <button className={css.submitButton} type="submit" disabled={loading}>
         Add contact
       </button>
     </form>
