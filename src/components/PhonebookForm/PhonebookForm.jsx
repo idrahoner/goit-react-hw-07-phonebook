@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { toast } from 'react-toastify';
+import { useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectContacts, selectLoadingStatus } from 'redux/selectors';
 import { addContact } from 'redux/operationsContacts';
@@ -8,6 +9,7 @@ import css from './PhonebookForm.module.css';
 export default function PhonebookForm() {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
+  const submitedName = useRef(false);
 
   const contacts = useSelector(selectContacts);
   const loading = useSelector(selectLoadingStatus);
@@ -33,14 +35,25 @@ export default function PhonebookForm() {
     const isAlreadyHave = hasInclude(name, phone, contacts);
 
     if (isAlreadyHave) {
-      return alert(isAlreadyHave + ' is already in contacts.');
+      return toast.info(isAlreadyHave + ' is already in contacts.');
     }
 
     dispatch(addContact({ name, phone }));
 
+    submitedName.current = name;
     setName('');
     setPhone('');
   };
+
+  if (loading && submitedName.current) {
+    toast.success(
+      `Hooray! You have successfully added ${submitedName.current}'s contact!`
+    );
+  }
+
+  if (!loading && submitedName.current) {
+    submitedName.current = false;
+  }
 
   return (
     <form onSubmit={handleSubmit} className={css.phonebookForm}>
@@ -70,7 +83,11 @@ export default function PhonebookForm() {
           onChange={handleChange}
         />
       </label>
-      <button className={css.submitButton} type="submit" disabled={loading}>
+      <button
+        className={css.submitButton}
+        type="submit"
+        disabled={loading && submitedName.current}
+      >
         Add contact
       </button>
     </form>

@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { HiOutlineX, HiOutlineDotsHorizontal } from 'react-icons/hi';
 import { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { removeContact } from 'redux/operationsContacts';
@@ -9,13 +10,14 @@ export default function ContactItem({ id, name, number }) {
   const dispatch = useDispatch();
   const loading = useSelector(selectLoadingStatus);
 
-  let clickedButtonId = useRef(null);
+  const clickedButtonId = useRef(null);
 
-  const handleRemove = event => {
-    event.currentTarget.textContent = 'Wait';
-    clickedButtonId = id;
+  const handleRemove = () => {
+    clickedButtonId.current = id;
     dispatch(removeContact(id));
   };
+
+  const buttonStatus = loading && clickedButtonId.current === id;
 
   return (
     <li className={css.contactItem}>
@@ -26,9 +28,13 @@ export default function ContactItem({ id, name, number }) {
         className={css.deleteButton}
         type="button"
         onClick={handleRemove}
-        disabled={loading}
+        disabled={buttonStatus}
       >
-        {loading && clickedButtonId === id ? 'Wait' : 'Delete'}
+        {buttonStatus ? (
+          <HiOutlineDotsHorizontal size="2em" />
+        ) : (
+          <HiOutlineX size="2em" />
+        )}
       </button>
     </li>
   );
