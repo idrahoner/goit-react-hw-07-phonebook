@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
-import css from './Section.module.css';
+import { Title } from './Section.styled';
 
 export default function Section({ title, children }) {
   return (
-    <div className={css.section}>
-      {title && <h2 className={css.sectionTitle}>{title}</h2>}
+    <>
+      {title && <Title>{title}</Title>}
       {children}
-    </div>
+    </>
   );
 }
 

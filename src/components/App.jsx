@@ -6,6 +6,7 @@ import { selectError } from 'redux/selectors';
 import Section from 'components/Section';
 import PhonebookForm from 'components/PhonebookForm';
 import ContactsLayout from 'components/ContactsLayout';
+import Box from 'components/Box';
 
 export default function App() {
   const dispatch = useDispatch();
@@ -20,13 +21,17 @@ export default function App() {
   }
 
   return (
-    <div>
-      <Section title="Phonebook">
-        <PhonebookForm />
-      </Section>
-      <Section title="Contacts">
-        <ContactsLayout />
-      </Section>
-    </div>
+    <>
+      <Box p={5} as="section">
+        <Section title="Phonebook">
+          <PhonebookForm />
+        </Section>
+      </Box>
+      <Box p={5} as="section">
+        <Section title="Contacts">
+          <ContactsLayout />
+        </Section>
+      </Box>
+    </>
   );
 }

@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { selectContacts, selectLoadingStatus } from 'redux/selectors';
 import { addContact } from 'redux/operationsContacts';
 import { hasInclude } from 'utils';
-import css from './PhonebookForm.module.css';
+import { Form, Label, InputField, SubmitButton } from './PhonebookForm.styled';
 
 export default function PhonebookForm() {
   const [name, setName] = useState('');
@@ -56,11 +56,10 @@ export default function PhonebookForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className={css.phonebookForm}>
-      <label className={css.formInput}>
+    <Form onSubmit={handleSubmit}>
+      <Label>
         Name
-        <input
-          className={css.formField}
+        <InputField
           type="text"
           name="name"
           pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
@@ -69,11 +68,10 @@ export default function PhonebookForm() {
           value={name}
           onChange={handleChange}
         />
-      </label>
-      <label className={css.formInput}>
+      </Label>
+      <Label>
         Phone
-        <input
-          className={css.formField}
+        <InputField
           type="tel"
           name="number"
           pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
@@ -82,14 +80,10 @@ export default function PhonebookForm() {
           value={phone}
           onChange={handleChange}
         />
-      </label>
-      <button
-        className={css.submitButton}
-        type="submit"
-        disabled={loading && submitedName.current}
-      >
+      </Label>
+      <SubmitButton type="submit" disabled={loading && submitedName.current}>
         Add contact
-      </button>
-    </form>
+      </SubmitButton>
+    </Form>
   );
 }

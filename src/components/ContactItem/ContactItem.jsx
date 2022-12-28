@@ -4,7 +4,7 @@ import { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { removeContact } from 'redux/operationsContacts';
 import { selectLoadingStatus } from 'redux/selectors';
-import css from './ContactItem.module.css';
+import { Contact, ContactText, DeleteButton } from './ContactItem.styled';
 
 export default function ContactItem({ id, name, number }) {
   const dispatch = useDispatch();
@@ -20,23 +20,22 @@ export default function ContactItem({ id, name, number }) {
   const buttonStatus = loading && clickedButtonId.current === id;
 
   return (
-    <li className={css.contactItem}>
-      <p className={css.contactText}>
-        {name}: {number}
-      </p>
-      <button
-        className={css.deleteButton}
+    <Contact>
+      <ContactText>
+        <b>{name}</b>: {number}
+      </ContactText>
+      <DeleteButton
         type="button"
         onClick={handleRemove}
         disabled={buttonStatus}
       >
         {buttonStatus ? (
-          <HiOutlineDotsHorizontal size="2em" />
+          <HiOutlineDotsHorizontal size="1.5em" />
         ) : (
-          <HiOutlineX size="2em" />
+          <HiOutlineX size="1.5em" />
         )}
-      </button>
-    </li>
+      </DeleteButton>
+    </Contact>
   );
 }
 

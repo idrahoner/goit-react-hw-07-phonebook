@@ -13,9 +13,9 @@ export default function ContactsLayout() {
   }
 
   return (
-    <div>
+    <>
       <Filter />
       <ContactList />
-    </div>
+    </>
   );
 }
